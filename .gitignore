@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 API/appsettings.json
 API/giggachain.db
+API/giggachain.db-shm
+API/giggachain.db-wal
