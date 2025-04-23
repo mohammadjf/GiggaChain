@@ -3,13 +3,14 @@ import agent from "../api/agent.ts";
 
 export const useActivities = (id?: string) => {
 	const queryClient = useQueryClient();
-	
+
 	const {data: activities, isPending} = useQuery({
 		queryKey: ['activities'],
 		queryFn: async () => {
 			const response = await agent.get<Activity[]>('/activities');
 			return response.data;
-		}
+		},
+		staleTime: 1000 * 60 * 5,
 	})
 	const {data: activity, isLoading: isLoadingActivity} = useQuery({
 		queryKey: ['activities', id],
@@ -26,7 +27,7 @@ export const useActivities = (id?: string) => {
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['activities'],
-			})	
+			})
 		}
 	})
 	const createActivity = useMutation({
@@ -37,7 +38,7 @@ export const useActivities = (id?: string) => {
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['activities'],
-			})	
+			})
 		}
 	})
 	const deleteActivity = useMutation({
@@ -47,10 +48,10 @@ export const useActivities = (id?: string) => {
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
 				queryKey: ['activities'],
-			})	
+			})
 		}
 	})
-	
+
 	return {
 		activities,
 		isPending,
