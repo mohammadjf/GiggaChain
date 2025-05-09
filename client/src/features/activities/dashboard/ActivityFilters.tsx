@@ -1,5 +1,5 @@
-import { FilterList, Event } from "@mui/icons-material";
-import { Box, ListItemText, MenuItem, MenuList, Paper, Typography } from "@mui/material";
+import {FilterList, Event} from "@mui/icons-material";
+import {Box, ListItemText, MenuItem, MenuList, Paper, Typography} from "@mui/material";
 import 'react-calendar/dist/Calendar.css';
 import Calendar from "react-calendar";
 
@@ -11,12 +11,12 @@ export default function ActivityFilters() {
 					<Typography variant="h6"
 								sx={{display: 'flex', alignItems: 'center', mb: 1, color: 'primary.main'}}
 					>
-						<FilterList sx={{mr: 1}} />
+						<FilterList sx={{mr: 1}}/>
 						Filters
 					</Typography>
 					<MenuList>
 						<MenuItem>
-							<ListItemText primary='All events' />
+							<ListItemText primary='All events'/>
 						</MenuItem>
 						<MenuItem>
 							<ListItemText primary="I'm going"/>
@@ -30,10 +30,10 @@ export default function ActivityFilters() {
 			<Box component={Paper} sx={{width: '100%', p: 3, borderRadius: 3}}>
 				<Typography variant="h6"
 							sx={{display: 'flex', alignItems: 'center', mb: 1, color: 'primary.main'}}>
-					<Event sx={{mr: 1}} />
+					<Event sx={{mr: 1}}/>
 					Select date
 				</Typography>
-				<Calendar />
+				<Calendar/>
 			</Box>
 		</Box>
 	)

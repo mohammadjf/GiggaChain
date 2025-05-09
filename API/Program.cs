@@ -1,5 +1,8 @@
+using API.Middleware;
+using Application.Activities.DTOs;
 using Application.Activities.Queries;
 using Application.Core;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -9,19 +12,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+	opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddMediatR(x =>
-    x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+{
+	x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
+	x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddCors();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityDto>();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x.AllowAnyHeader()
-                                .AllowAnyMethod()
-                                .WithOrigins("http://localhost:3000", "https://localhost:3000"));
+	.AllowAnyMethod()
+	.WithOrigins("http://localhost:3000", "https://localhost:3000"));
 app.MapControllers();
 
 using var scope = app.Services.CreateScope();
@@ -29,14 +38,14 @@ var services = scope.ServiceProvider;
 
 try
 {
-    var context = services.GetRequiredService<AppDbContext>();
-    await context.Database.MigrateAsync();
-    await DbInitializer.SeedData(context);
+	var context = services.GetRequiredService<AppDbContext>();
+	await context.Database.MigrateAsync();
+	await DbInitializer.SeedData(context);
 }
 catch
 {
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError("An error occurred while migration and seeding the database.");
+	var logger = services.GetRequiredService<ILogger<Program>>();
+	logger.LogError("An error occurred while migration and seeding the database.");
 }
 
 app.Run();
