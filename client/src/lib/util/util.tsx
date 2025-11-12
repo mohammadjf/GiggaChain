@@ -1,5 +1,12 @@
-import { DateArg, format } from "date-fns";
+import {DateArg, format} from "date-fns";
+import {z} from "zod";
 
 export function formatDate(date: DateArg<Date>) {
-	return format(date, 'dd MMM yyyy h:mm a')
+    return format(date, 'dd MMM yyyy h:mm a')
 }
+
+export function requiredString(fieldName: string) {
+    return z
+        .string({error: `${fieldName} is required`})
+        .min(1, {error: `${fieldName} is required`})
+} 
