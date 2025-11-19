@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import {useActivities} from "../../../lib/hooks/useActivities";
 import {useNavigate, useParams} from "react-router";
 import {Resolver, useForm} from "react-hook-form";
-import {activitySchema, ActivitySchema} from "../../../lib/Schemas/ActivitySchema.ts";
+import {activitySchema, ActivitySchema} from "../../../lib/schemas/ActivitySchema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import TextInput from "../../../app/shared/components/TextInput.tsx";
 import SelectInput from "../../../app/shared/components/SelectInput.tsx";
@@ -48,7 +48,7 @@ export default function ActivityForm() {
 			console.error(error);
 		}
 	}
-	
+
 	if (isLoadingActivity) return <Typography>Loading activity...</Typography>
 
 	return (
